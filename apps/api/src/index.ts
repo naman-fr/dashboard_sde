@@ -17,12 +17,27 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
 // --------------- Middleware ---------------
 app.use(helmet());
 app.use(compression());
-app.use(
-  cors({
-    origin: CORS_ORIGIN,
-    credentials: true,
-  })
-);
+// Allow multiple origins or wildcard for Vercel preview deployments
+const corsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    if (!origin) return callback(null, true);
+    
+    // If CORS_ORIGIN is '*', allow all
+    if (CORS_ORIGIN === '*') return callback(null, true);
+    
+    // Split by comma in case user provided multiple
+    const allowedOrigins = CORS_ORIGIN.split(',').map(o => o.trim());
+    
+    if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(null, false);
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json({ limit: '5mb' }));
 
 // --------------- Health check ---------------
