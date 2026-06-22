@@ -13,6 +13,18 @@ export async function GET(req: Request) {
       return NextResponse.json({ success: false, error: 'pageUrl query parameter is required' }, { status: 400 });
     }
 
+    if (!process.env.MONGO_URI) {
+      return NextResponse.json({ 
+        success: true, 
+        data: [
+          { metadata: { x: 100, y: 200 }, timestamp: new Date() },
+          { metadata: { x: 150, y: 250 }, timestamp: new Date() },
+          { metadata: { x: 300, y: 400 }, timestamp: new Date() }
+        ],
+        message: 'Viewing mock data. Add MONGO_URI to see real data.'
+      });
+    }
+
     await connectDB();
 
     // In a real scenario, we would aggregate click coordinates specifically

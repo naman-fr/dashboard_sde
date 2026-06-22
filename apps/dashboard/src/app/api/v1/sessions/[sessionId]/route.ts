@@ -10,6 +10,23 @@ export async function GET(
     const resolvedParams = await params;
     const { sessionId } = resolvedParams;
 
+    if (!process.env.MONGO_URI) {
+      return NextResponse.json({ 
+        success: true, 
+        data: {
+          sessionId,
+          eventCount: 2,
+          startTime: new Date(Date.now() - 60000),
+          endTime: new Date(),
+          events: [
+            { eventType: 'pageview', pageUrl: 'https://example.com', timestamp: new Date(Date.now() - 60000) },
+            { eventType: 'click', pageUrl: 'https://example.com', timestamp: new Date() }
+          ]
+        },
+        message: 'Viewing mock data. Add MONGO_URI to see real data.'
+      });
+    }
+
     await connectDB();
 
     const events = await EventModel.find({ sessionId }).sort({ timestamp: 1 }).lean();

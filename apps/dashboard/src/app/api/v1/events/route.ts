@@ -12,6 +12,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, errors: result.error.errors }, { status: 400 });
     }
 
+    if (!process.env.MONGO_URI) {
+      return NextResponse.json({ success: true, count: result.data.events.length, message: 'Mock ingestion successful.' }, { status: 201 });
+    }
+
     await connectDB();
     
     // Map timestamp strings to Dates

@@ -11,6 +11,23 @@ export async function GET(req: Request) {
     const limit = parseInt(searchParams.get('limit') || '20', 10);
     const skip = (page - 1) * limit;
 
+    if (!process.env.MONGO_URI) {
+      return NextResponse.json({ 
+        success: true, 
+        data: [
+          {
+            sessionId: 'demo-session-123',
+            eventCount: 12,
+            startTime: new Date(Date.now() - 3600000),
+            endTime: new Date(),
+            durationMs: 3600000,
+            pagesVisited: 3
+          }
+        ],
+        message: 'Viewing mock data. Add MONGO_URI in Vercel to see real data.'
+      });
+    }
+
     await connectDB();
 
     const sessions = await EventModel.aggregate([
