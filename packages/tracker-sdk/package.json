@@ -1,0 +1,16 @@
+{
+  "name": "@analytics/tracker-sdk",
+  "version": "1.0.0",
+  "main": "dist/tracker.js",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --outfile=dist/tracker.js --format=iife --global-name=Analytics --minify",
+    "dev": "esbuild src/index.ts --bundle --outfile=dist/tracker.js --format=iife --global-name=Analytics --watch"
+  },
+  "dependencies": {
+    "@analytics/shared-types": "*"
+  },
+  "devDependencies": {
+    "esbuild": "^0.20.2",
+    "typescript": "^5.x"
+  }
+}
