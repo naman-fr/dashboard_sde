@@ -34,8 +34,15 @@ async function connectDB() {
 
   try {
     cached.conn = await cached.promise;
-  } catch (e) {
+  } catch (e: any) {
     cached.promise = null;
+    console.error('MongoDB Connection Error Details:', e.message);
+    if (e.message && e.message.includes('bad auth')) {
+      throw new Error('MongoDB Authentication failed. Please check your username and password in MONGO_URI.');
+    }
+    if (e.message && e.message.includes('querySrv ETIMEOUT')) {
+      throw new Error('MongoDB Connection Timed Out. Please ensure your MongoDB Atlas Network Access is set to allow 0.0.0.0/0 (Access from Anywhere) for Vercel deployments.');
+    }
     throw e;
   }
 
