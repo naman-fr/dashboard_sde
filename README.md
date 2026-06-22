@@ -10,7 +10,13 @@ An end-to-end user analytics platform built as a monorepo for tracking, ingestin
 - **Database**: MongoDB Atlas
 - **Tracking SDK**: Vanilla TypeScript (compiled with esbuild)
 - **Validation**: Zod
+- **Caching**: Redis
 - **Logging**: Winston
+
+## 📚 Architecture & Design
+Check the `docs/` folder for comprehensive architecture diagrams and schemas:
+- [High-Level Design (HLD)](docs/HLD.md)
+- [Low-Level Design (LLD)](docs/LLD.md)
 
 ## 📁 Project Structure
 

@@ -5,22 +5,22 @@ import { usePathname } from 'next/navigation';
 import { LayoutDashboard, Users, Map } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+export const navigationLinks = [
+  { name: 'Dashboard', href: '/', icon: LayoutDashboard },
+  { name: 'Sessions', href: '/sessions', icon: Users },
+  { name: 'Heatmap', href: '/heatmap', icon: Map },
+];
+
 export function Sidebar() {
   const pathname = usePathname();
 
-  const links = [
-    { name: 'Dashboard', href: '/', icon: LayoutDashboard },
-    { name: 'Sessions', href: '/sessions', icon: Users },
-    { name: 'Heatmap', href: '/heatmap', icon: Map },
-  ];
-
   return (
-    <div className="flex h-full w-64 flex-col border-r bg-white/50 backdrop-blur-md">
+    <div className="hidden md:flex h-full w-64 flex-col border-r bg-white/50 backdrop-blur-md">
       <div className="flex h-16 items-center px-6 font-bold text-lg tracking-tight bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
         Analytics SaaS
       </div>
       <nav className="flex-1 space-y-2 px-4 py-6">
-        {links.map((link) => {
+        {navigationLinks.map((link) => {
           const Icon = link.icon;
           const isActive = pathname === link.href;
           return (

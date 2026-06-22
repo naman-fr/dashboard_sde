@@ -1,12 +1,19 @@
 import { Request, Response, NextFunction } from 'express';
 import { EventModel } from '../models/Event';
 import { logger } from '@analytics/shared-utils';
+import { cacheGet, cacheSet } from '../config/redis';
 
 export const getSessions = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 20;
     const skip = (page - 1) * limit;
+
+    const cacheKey = `sessions:page:${page}:limit:${limit}`;
+    const cachedData = await cacheGet(cacheKey);
+    if (cachedData) {
+      return res.json(cachedData);
+    }
 
     // Aggregation pipeline to group by sessionId and get counts/timestamps
     const pipeline = [
@@ -42,7 +49,7 @@ export const getSessions = async (req: Request, res: Response, next: NextFunctio
     const totalResult = await EventModel.aggregate(countPipeline);
     const total = totalResult.length > 0 ? totalResult[0].total : 0;
 
-    res.json({
+    const responseData = {
       success: true,
       data: sessions,
       meta: {
@@ -51,7 +58,10 @@ export const getSessions = async (req: Request, res: Response, next: NextFunctio
         limit,
         totalPages: Math.ceil(total / limit)
       }
-    });
+    };
+
+    await cacheSet(cacheKey, responseData, 60); // cache for 60 seconds
+    res.json(responseData);
   } catch (error) {
     logger.error('Error fetching sessions:', error);
     next(error);
@@ -82,6 +92,12 @@ export const getHeatmap = async (req: Request, res: Response, next: NextFunction
       return res.status(400).json({ success: false, error: 'pageUrl query parameter is required' });
     }
 
+    const cacheKey = `heatmap:${pageUrl}`;
+    const cachedData = await cacheGet(cacheKey);
+    if (cachedData) {
+      return res.json(cachedData);
+    }
+
     const clicks = await EventModel.find({
       eventType: 'click',
       pageUrl: pageUrl
@@ -95,7 +111,9 @@ export const getHeatmap = async (req: Request, res: Response, next: NextFunction
       y: c.metadata?.y
     })).filter((c: any) => c.x !== undefined && c.y !== undefined);
 
-    res.json({ success: true, data });
+    const responseData = { success: true, data };
+    await cacheSet(cacheKey, responseData, 120); // Cache heatmap for 2 mins
+    res.json(responseData);
   } catch (error) {
     logger.error('Error fetching heatmap data:', error);
     next(error);
