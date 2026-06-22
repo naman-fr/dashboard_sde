@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
-    "next": "^15.0.0",
     "typescript": "^5.x"
   },
   "workspaces": [
