@@ -23,7 +23,7 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || '*',
   methods: ['GET', 'POST', 'OPTIONS'],
 }));
-app.use(compression());
+app.use(compression() as any);
 app.use(express.json({ limit: '100kb' })); // Protect against large payloads
 
 // Rate limiting for events ingestion
@@ -40,7 +40,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.use('/api/v1/events', ingestLimiter);
+app.use('/api/v1/events', ingestLimiter as any);
 app.use('/api/v1', v1Routes);
 
 // Global Error Handler
