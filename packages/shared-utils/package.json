@@ -1,0 +1,17 @@
+{
+  "name": "@analytics/shared-utils",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc -w"
+  },
+  "dependencies": {
+    "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.x",
+    "@types/winston": "^2.4.4"
+  }
+}
