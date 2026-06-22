@@ -3,6 +3,8 @@ import axios from 'axios';
 const userApiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1';
 const baseURL = userApiUrl.endsWith('/api/v1') ? userApiUrl : `${userApiUrl.replace(/\/$/, '')}/api/v1`;
 
+console.log('[API Debug] Computed Base URL:', baseURL);
+
 const api = axios.create({
   baseURL,
   headers: {
