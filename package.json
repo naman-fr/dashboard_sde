@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "npm run dev --workspaces --if-present",
     "build:packages": "npm run build -w @analytics/shared-types -w @analytics/shared-utils -w @analytics/tracker-sdk",
-    "build:apps": "npm run build -w dashboard",
+    "build:apps": "npm run build -w @analytics/api -w dashboard",
     "build": "npm run build:packages && npm run build:apps",
     "start": "npm run start --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present"

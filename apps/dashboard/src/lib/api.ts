@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api/v1',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -19,6 +19,11 @@ export const getSessionTimeline = async (sessionId: string) => {
 
 export const getHeatmapData = async (pageUrl: string) => {
   const { data } = await api.get('/heatmap', { params: { pageUrl } });
+  return data;
+};
+
+export const getDashboardStats = async () => {
+  const { data } = await api.get('/stats');
   return data;
 };
 

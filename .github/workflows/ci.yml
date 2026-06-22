@@ -25,10 +25,16 @@ jobs:
         
     - name: Install dependencies
       run: npm ci || npm install
-      
-    - name: Build all packages and apps
-      run: npm run build
-      
-    # Optionally run lint if configured
-    # - name: Run Lint
-    #   run: npm run lint
+
+    - name: Build shared packages
+      run: npm run build:packages
+
+    - name: Build API
+      run: npm run build -w @analytics/api
+
+    - name: Build Dashboard
+      run: npm run build -w dashboard
+
+    - name: Lint (if configured)
+      run: npm run lint || true
+      continue-on-error: true

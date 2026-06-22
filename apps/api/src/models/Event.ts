@@ -1,12 +1,15 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { AnalyticsEvent } from '@analytics/shared-types';
 
-export interface IEvent extends Document, Omit<AnalyticsEvent, 'timestamp'> {
+export interface IEvent extends Document {
+  sessionId: string;
+  eventType: 'page_view' | 'click';
+  pageUrl: string;
   timestamp: Date;
+  metadata: Record<string, unknown>;
   createdAt: Date;
 }
 
-const EventSchema = new Schema(
+const EventSchema = new Schema<IEvent>(
   {
     sessionId: { type: String, required: true, index: true },
     eventType: { type: String, required: true, index: true },
@@ -14,10 +17,11 @@ const EventSchema = new Schema(
     timestamp: { type: Date, required: true },
     metadata: { type: Schema.Types.Mixed, default: {} },
   },
-  { timestamps: { createdAt: true, updatedAt: false } }
+  {
+    timestamps: { createdAt: true, updatedAt: false },
+  }
 );
 
-// Compound index for optimal timeline queries
 EventSchema.index({ sessionId: 1, timestamp: 1 });
 
-export const EventModel = mongoose.models.Event || mongoose.model<IEvent>('Event', EventSchema);
+export const EventModel = mongoose.model<IEvent>('Event', EventSchema);

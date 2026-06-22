@@ -1,3 +1,7 @@
 {
-  "buildCommand": "cd ../.. && npm run build -w @analytics/shared-types && cd apps/dashboard && next build"
+  "version": 2,
+  "buildCommand": "cd ../.. && npm run build:packages && cd apps/dashboard && next build",
+  "installCommand": "cd ../.. && npm install",
+  "framework": "nextjs",
+  "outputDirectory": ".next"
 }
