@@ -1,8 +1,12 @@
 import mongoose, { Schema, Document } from 'mongoose';
 import { AnalyticsEvent } from '@analytics/shared-types';
 
-export interface IEventDocument extends Document, Omit<AnalyticsEvent, 'timestamp'> {
+export interface IEventDocument extends Document {
+  sessionId: string;
+  eventType: string;
+  pageUrl: string;
   timestamp: Date;
+  metadata?: any;
   createdAt: Date;
 }
 

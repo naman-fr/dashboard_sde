@@ -90,10 +90,10 @@ export const getHeatmap = async (req: Request, res: Response, next: NextFunction
     .lean();
 
     // Transform back to simple {x, y} array
-    const data = clicks.map(c => ({
+    const data = clicks.map((c: any) => ({
       x: c.metadata?.x,
       y: c.metadata?.y
-    })).filter(c => c.x !== undefined && c.y !== undefined);
+    })).filter((c: any) => c.x !== undefined && c.y !== undefined);
 
     res.json({ success: true, data });
   } catch (error) {

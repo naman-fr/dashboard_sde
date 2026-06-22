@@ -14,7 +14,7 @@ export const ingestEvents = async (req: Request, res: Response, next: NextFuncti
     const { events } = result.data;
     
     // Transform timestamp to Date object
-    const docs = events.map(event => ({
+    const docs = events.map((event: any) => ({
       ...event,
       timestamp: new Date(event.timestamp)
     }));
