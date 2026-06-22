@@ -17,11 +17,13 @@ export function Navbar() {
     <header className="flex h-16 items-center justify-between border-b px-4 md:px-6 bg-white/50 backdrop-blur-md sticky top-0 z-50">
       <div className="flex items-center gap-4">
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
+          <SheetTrigger
+            render={
+              <Button variant="ghost" size="icon" className="md:hidden" />
+            }
+          >
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle navigation menu</span>
           </SheetTrigger>
           <SheetContent side="left" className="w-64 p-0">
             <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
