@@ -33,6 +33,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ success: true, data: events });
   } catch (error) {
     console.error('Error fetching heatmap data:', error);
-    return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ success: false, error: error instanceof Error ? error.message : 'Internal Server Error' }, { status: 500 });
   }
 }

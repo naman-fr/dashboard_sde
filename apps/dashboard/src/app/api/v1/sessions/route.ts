@@ -50,6 +50,6 @@ export async function GET(req: Request) {
     return NextResponse.json({ success: true, data: sessions });
   } catch (error) {
     console.error('Error fetching sessions:', error);
-    return NextResponse.json({ success: false, error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ success: false, error: error instanceof Error ? error.message : 'Internal Server Error' }, { status: 500 });
   }
 }
